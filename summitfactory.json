@@ -1,6 +1,6 @@
 {
   "v": "4.0",
-  "name": "SummitLabFactory",
+  "name": "summit2019lab",
   "workspace": {
     "defaultEnv": "default",
     "environments": {
@@ -11,28 +11,34 @@
               "memoryLimitBytes": "3221225472"
             },
             "servers": {
-              "tomcat8": {
-                "attributes": {},
+              "springboot": {
                 "port": "8080",
+                "attributes": {},
                 "protocol": "http"
               }
             },
-            "volumes": {},
+            "volumes": {
+              "m2": {
+                "path": "/home/jboss/.m2"
+              },
+              "javadata": {
+                "path": "/home/jboss/jdtls/data"
+              }
+            },
             "installers": [
               "org.eclipse.che.exec",
               "org.eclipse.che.terminal",
               "org.eclipse.che.ws-agent",
+              "org.eclipse.che.ls.camel",
               "org.eclipse.che.ls.java",
-              "com.redhat.bayesian.lsp",
-              "com.redhat.oc-login",
-              "org.eclipse.che.ls.camel"
+              "com.redhat.bayesian.lsp"
             ],
             "env": {}
           }
         },
         "recipe": {
           "type": "dockerimage",
-          "content": "quay.io/openshiftio/che-centos_jdk8"
+          "content": "registry.access.redhat.com/codeready-workspaces/stacks-java"
         }
       }
     },
@@ -45,31 +51,37 @@
             "master"
           ],
           "commands": [
-            "{\"commandLine\":\"mvn clean install -f ${current.project.path}\", \"name\":\"build\", \"attributes\":{\"goal\":\"Build\", \"previewUrl\":\"\"}, \"type\":\"mvn\"}"
+            "{\"commandLine\":\"wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \\nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \\nmkdir bin \\ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \\necho \\\"PATH=$PATH:/projects/bin\\\" >> ~/.bash_profile \\necho \\\"export PATH\\\" >> ~/.bash_profile\\nsource ~/.bash_profile\\necho \\\"---DONE---\\\"\", \"name\":\"InstallCamelK\", \"attributes\":{\"goal\":\"Common\", \"previewUrl\":\"\"}, \"type\":\"custom\"}"
           ]
         },
-        "type": "maven",
+        "type": "blank",
         "source": {
           "location": "https://github.com/weimeilin79/summit2019-lab.git",
           "type": "git",
           "parameters": {}
         },
-        "path": "/lab-demo",
-        "description": "",
+        "path": "/summit2019-lab",
         "problems": [],
         "mixins": [
           "pullrequest"
         ]
       }
     ],
-    "name": "SummitLab",
-    "attributes": {
-      "persistVolumes": "false"
-    },
+    "name": "Summitlab",
+    "attributes": {},
     "commands": [
       {
-        "commandLine": "wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \nmkdir bin \ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \necho \"PATH=$PATH:/projects/bin\" >> ~/.bash_profile \necho \"export PATH\" >> ~/.bash_profile\nsource ~/.bash_profile\necho \"-----DONE-----\"",
-        "name": "InstallKamel",
+        "commandLine": "MAVEN_OPTS='-Xmx100m' && mvn clean package -f ${current.project.path}/pom.xml",
+        "name": "build",
+        "attributes": {
+          "goal": "Build",
+          "previewUrl": ""
+        },
+        "type": "mvn"
+      },
+      {
+        "commandLine": "wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \nmkdir bin \ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \necho \"PATH=$PATH:/projects/bin\" >> ~/.bash_profile \necho \"export PATH\" >> ~/.bash_profile\nsource ~/.bash_profile",
+        "name": "InstallCamelK",
         "attributes": {
           "previewUrl": ""
         },
@@ -78,29 +90,16 @@
     ],
     "links": []
   },
-  "id": "factoryjemahdr5g1psym1t",
   "ide": {
     "onProjectsLoaded": {
       "actions": [
         {
           "properties": {
-            "name": "InstallKamel"
+            "name": "InstallCamelK"
           },
           "id": "runCommand"
-        },
-        {
-          "properties": {
-            "file": "README.md"
-          },
-          "id": "openFile"
         }
       ]
     }
-  },
-  "creator": {
-    "name": "clin@redhat.com",
-    "email": "clin@redhat.com",
-    "created": 1556111083484,
-    "userId": "b177756d-d338-45ce-b222-12b8d65a2b24"
   }
 }
