@@ -1,0 +1,106 @@
+{
+  "v": "4.0",
+  "name": "SummitLabFactory",
+  "workspace": {
+    "defaultEnv": "default",
+    "environments": {
+      "default": {
+        "machines": {
+          "dev-machine": {
+            "attributes": {
+              "memoryLimitBytes": "3221225472"
+            },
+            "servers": {
+              "tomcat8": {
+                "attributes": {},
+                "port": "8080",
+                "protocol": "http"
+              }
+            },
+            "volumes": {},
+            "installers": [
+              "org.eclipse.che.exec",
+              "org.eclipse.che.terminal",
+              "org.eclipse.che.ws-agent",
+              "org.eclipse.che.ls.java",
+              "com.redhat.bayesian.lsp",
+              "com.redhat.oc-login",
+              "org.eclipse.che.ls.camel"
+            ],
+            "env": {}
+          }
+        },
+        "recipe": {
+          "type": "dockerimage",
+          "content": "quay.io/openshiftio/che-centos_jdk8"
+        }
+      }
+    },
+    "projects": [
+      {
+        "links": [],
+        "name": "summit2019-lab",
+        "attributes": {
+          "contribute_to_branch": [
+            "master"
+          ],
+          "commands": [
+            "{\"commandLine\":\"mvn clean install -f ${current.project.path}\", \"name\":\"build\", \"attributes\":{\"goal\":\"Build\", \"previewUrl\":\"\"}, \"type\":\"mvn\"}"
+          ]
+        },
+        "type": "maven",
+        "source": {
+          "location": "https://github.com/weimeilin79/summit2019-lab.git",
+          "type": "git",
+          "parameters": {}
+        },
+        "path": "/lab-demo",
+        "description": "",
+        "problems": [],
+        "mixins": [
+          "pullrequest"
+        ]
+      }
+    ],
+    "name": "SummitLab",
+    "attributes": {
+      "persistVolumes": "false"
+    },
+    "commands": [
+      {
+        "commandLine": "wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \nmkdir bin \ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \necho \"PATH=$PATH:/projects/bin\" >> ~/.bash_profile \necho \"export PATH\" >> ~/.bash_profile\nsource ~/.bash_profile\necho \"-----DONE-----\"",
+        "name": "InstallKamel",
+        "attributes": {
+          "previewUrl": ""
+        },
+        "type": "custom"
+      }
+    ],
+    "links": []
+  },
+  "id": "factoryjemahdr5g1psym1t",
+  "ide": {
+    "onProjectsLoaded": {
+      "actions": [
+        {
+          "properties": {
+            "name": "InstallKamel"
+          },
+          "id": "runCommand"
+        },
+        {
+          "properties": {
+            "file": "README.md"
+          },
+          "id": "openFile"
+        }
+      ]
+    }
+  },
+  "creator": {
+    "name": "clin@redhat.com",
+    "email": "clin@redhat.com",
+    "created": 1556111083484,
+    "userId": "b177756d-d338-45ce-b222-12b8d65a2b24"
+  }
+}
