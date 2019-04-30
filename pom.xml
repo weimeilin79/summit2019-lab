@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.apache.camel</groupId>
-    <artifactId>lab-demo</artifactId>
+    <artifactId>summit19-lab</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
