@@ -1,6 +1,6 @@
 {
   "v": "4.0",
-  "name": "summit2019lab",
+  "name": "summit2019",
   "workspace": {
     "defaultEnv": "default",
     "environments": {
@@ -8,7 +8,7 @@
         "machines": {
           "dev-machine": {
             "attributes": {
-              "memoryLimitBytes": "3221225472"
+              "memoryLimitBytes": "2147483648"
             },
             "servers": {
               "springboot": {
@@ -51,10 +51,11 @@
             "master"
           ],
           "commands": [
-            "{\"commandLine\":\"wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \\nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \\nmkdir bin \\ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \\necho \\\"PATH=$PATH:/projects/bin\\\" >> ~/.bash_profile \\necho \\\"export PATH\\\" >> ~/.bash_profile\\nsource ~/.bash_profile\\necho \\\"---DONE---\\\"\", \"name\":\"InstallCamelK\", \"attributes\":{\"goal\":\"Common\", \"previewUrl\":\"\"}, \"type\":\"custom\"}"
+            "{\"commandLine\":\"wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \\nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \\nmkdir bin \\ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \\necho \\\"PATH=$PATH:/projects/bin\\\" >> ~/.bash_profile \\necho \\\"export PATH\\\" >> ~/.bash_profile \\nsource ~/.bash_profile\\necho \\\"====DONE====\\\"\", \"name\":\"InstallCamelK\", \"attributes\":{\"goal\":\"Common\", \"previewUrl\":\"\"}, \"type\":\"custom\"}",
+            "{\"commandLine\":\"wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \\nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \\nmkdir bin \\ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \\necho \\\"PATH=$PATH:/projects/bin\\\" >> ~/.bash_profile \\necho \\\"export PATH\\\" >> ~/.bash_profile \\nsource ~/.bash_profile\\necho \\\"====DONE====\\\"\", \"name\":\"InstallCamel\", \"attributes\":{\"goal\":\"Run\", \"previewUrl\":\"\"}, \"type\":\"custom\"}"
           ]
         },
-        "type": "blank",
+        "type": "maven",
         "source": {
           "location": "https://github.com/weimeilin79/summit2019-lab.git",
           "type": "git",
@@ -67,7 +68,7 @@
         ]
       }
     ],
-    "name": "Summitlab",
+    "name": "wksp-ay8g_1",
     "attributes": {},
     "commands": [
       {
@@ -80,7 +81,16 @@
         "type": "mvn"
       },
       {
-        "commandLine": "wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \nmkdir bin \ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \necho \"PATH=$PATH:/projects/bin\" >> ~/.bash_profile \necho \"export PATH\" >> ~/.bash_profile\nsource ~/.bash_profile",
+        "commandLine": "${HOME}/stack-analysis.sh -f ${current.project.path}/pom.xml -p ${current.project.path}",
+        "name": "dependency_analysis",
+        "attributes": {
+          "goal": "Run",
+          "previewUrl": ""
+        },
+        "type": "custom"
+      },
+      {
+        "commandLine": "wget https://github.com/apache/camel-k/releases/download/0.3.2/camel-k-client-0.3.2-linux-64bit.tar.gz \nchmod 755 camel-k-client-0.3.2-linux-64bit.tar.gz \nmkdir bin \ntar -xf camel-k-client-0.3.2-linux-64bit.tar.gz -C bin/ \necho \"PATH=$PATH:/projects/bin\" >> ~/.bash_profile \necho \"export PATH\" >> ~/.bash_profile \nsource ~/.bash_profile\necho \"====DONE====\"",
         "name": "InstallCamelK",
         "attributes": {
           "previewUrl": ""
@@ -93,6 +103,12 @@
   "ide": {
     "onProjectsLoaded": {
       "actions": [
+        {
+          "properties": {
+            "file": "/projects/summit2019-lab/README.md"
+          },
+          "id": "openFile"
+        },
         {
           "properties": {
             "name": "InstallCamelK"
