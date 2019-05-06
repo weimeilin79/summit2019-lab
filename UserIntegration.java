@@ -9,17 +9,17 @@ public class UserIntegration extends RouteBuilder {
 
     public void configure() throws Exception {
 
-        from("kafka:traffic?brokers=my-cluster-kafka-bootstrap.streams.svc:9092")
+        from("kafka:traffic?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
                 .unmarshal().json(JsonLibrary.Jackson, TrafficInfo.class)
                 .filter(simple("${body.getDestination()} == 'AIRPORT'"))
                 .process(e -> traffic.set(e.getMessage().getBody(TrafficInfo.class).getExpectedTime()))
                 .log("Updated traffic: ${body}");
 
 
-        from("kafka:lyft?brokers=my-cluster-kafka-bootstrap.streams.svc:9092")
+        from("kafka:lyft?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
                 .to("direct:process");
 
-        from("kafka:uber?brokers=my-cluster-kafka-bootstrap.streams.svc:9092")
+        from("kafka:uber?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
                 .to("direct:process");
 
 
@@ -27,7 +27,7 @@ public class UserIntegration extends RouteBuilder {
                 ;
 
        
-        from("kafka:stream?brokers=my-cluster-kafka-bootstrap.streams.svc:9092")
+        from("kafka:stream?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
                 .log("Processed: ${body}");
     }
 
