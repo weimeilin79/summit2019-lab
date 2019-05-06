@@ -16,10 +16,10 @@ public class UserIntegration extends RouteBuilder {
                 .log("Updated traffic: ${body}");
 
 
-        from("kafka:lyft?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
+        from("kafka:userX-lyft?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
                 .to("direct:process");
 
-        from("kafka:uber?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
+        from("kafka:serX-uber?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
                 .to("direct:process");
 
 
@@ -27,7 +27,7 @@ public class UserIntegration extends RouteBuilder {
                 ;
 
        
-        from("kafka:stream?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
+        from("kafka:serX-stream?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
                 .log("Processed: ${body}");
     }
 
