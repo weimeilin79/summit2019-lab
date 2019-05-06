@@ -5,17 +5,10 @@ import org.apache.camel.model.dataformat.JsonLibrary;
 
 public class UserIntegration extends RouteBuilder {
 
-    private AtomicLong traffic = new AtomicLong();
-
+    
     public void configure() throws Exception {
 
-        from("kafka:traffic?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
-                .unmarshal().json(JsonLibrary.Jackson, TrafficInfo.class)
-                .filter(simple("${body.getDestination()} == 'AIRPORT'"))
-                .process(e -> traffic.set(e.getMessage().getBody(TrafficInfo.class).getExpectedTime()))
-                .log("Updated traffic: ${body}");
-
-
+       
         from("kafka:userX-lyft?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
                 .to("direct:process");
 
@@ -27,8 +20,6 @@ public class UserIntegration extends RouteBuilder {
                 ;
 
        
-        from("kafka:serX-stream?brokers=hack-cluster-kafka-bootstrap.streams.svc:9092")
-                .log("Processed: ${body}");
     }
 
     public static VehicleInfo buildLyft(long vehicleId, double pricePerMinute, long timeToPickup, int availableSpace, boolean available) {
@@ -129,35 +120,6 @@ public class UserIntegration extends RouteBuilder {
         }
     }
 
-    public static class TrafficInfo {
-
-        private String destination;
-
-        private long expectedTime;
-
-        public String getDestination() {
-            return destination;
-        }
-
-        public void setDestination(String destination) {
-            this.destination = destination;
-        }
-
-        public long getExpectedTime() {
-            return expectedTime;
-        }
-
-        public void setExpectedTime(long expectedTime) {
-            this.expectedTime = expectedTime;
-        }
-
-        @Override
-        public String toString() {
-            return "TrafficInfo{" +
-                    "destination='" + destination + '\'' +
-                    ", expectedTime=" + expectedTime +
-                    '}';
-        }
-    }
+    
 
 }
